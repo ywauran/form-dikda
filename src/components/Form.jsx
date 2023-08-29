@@ -56,7 +56,7 @@ const Form = () => {
     if (selectedItem && skFile && kkFile) {
       try {
         const selectedData = data.find(
-          (item) => item.name === selectedItem.value
+          (item) => item.no === selectedItem.value
         );
 
         const newDataRef = rtdbRef(database, "data");
@@ -83,12 +83,14 @@ const Form = () => {
         });
         // Show success alert for 5 seconds
         showAlertWithTimeout(
-          "Berhasil",
+          "success",
           "Data dan file berhasil disimpan.",
           5000
         );
         resetState();
       } catch (error) {
+        console.error("Error uploading files:", error);
+
         // Show error alert for 5 seconds
         showAlertWithTimeout(
           "error",
@@ -98,7 +100,7 @@ const Form = () => {
       }
     } else {
       showAlertWithTimeout(
-        "Error",
+        "error",
         "Silakan pilih salah satu opsi dan unggah kedua file.",
         5000
       );
@@ -190,7 +192,7 @@ const Form = () => {
           Simpan
         </button>
         {showAlert && alertType === "success" && (
-          <AlertSuccess title="Success" description={alertMessage} />
+          <AlertSuccess title="Berhasil" description={alertMessage} />
         )}
         {showAlert && alertType === "error" && (
           <AlertWarn title="Error" description={alertMessage} />

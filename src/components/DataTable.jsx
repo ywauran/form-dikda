@@ -44,7 +44,7 @@ const DataTable = ({ data }) => {
             viewBox="0 0 24 24"
             strokeWidth="1.5"
             stroke="currentColor"
-            className="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-gray-500 pointer-events-none"
+            className="absolute w-6 h-6 text-gray-500 transform -translate-y-1/2 pointer-events-none left-3 top-1/2"
           >
             <path
               strokeLinecap="round"
@@ -57,7 +57,6 @@ const DataTable = ({ data }) => {
 
       <div className="overflow-x-auto">
         <table className="table w-full border">
-          {/* Table headers */}
           <thead>
             <tr className="bg-gray-200">
               <th className="px-4 py-3 border">No</th>
@@ -69,78 +68,89 @@ const DataTable = ({ data }) => {
               <th className="px-4 py-3 border">Berkas KK</th>
             </tr>
           </thead>
-          {/* Table body */}
           <tbody>
-            {visibleItems.map((item, index) => (
-              <tr key={item.no} className="hover:bg-gray-100">
-                <td className="px-4 py-3 border">{index + 1}</td>
-                <td className="px-4 py-3 border">{item.name}</td>
-                <td className="px-4 py-3 border text-center">
-                  {item.education}
-                </td>
-                <td className="px-4 py-3 border text-center">{item.gender}</td>
-                <td className="px-4 py-3 border text-center">
-                  {item.workUnit}
-                </td>
-                <td className="px-4 py-3 border ">
-                  <a
-                    href={item.skFileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center text-blue-600 underline hover:no-underline"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-6 h-6 mr-2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                      />
-                    </svg>
-                    SK File
-                  </a>
-                </td>
-                <td className="px-4 py-3 border text-center ">
-                  <a
-                    href={item.kkFileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center text-blue-600 underline hover:no-underline"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                      className="w-6 h-6 mr-2"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                      />
-                    </svg>
-                    KK File
-                  </a>
+            {visibleItems.length === 0 ? (
+              <tr>
+                <td className="flex items-center justify-center">
+                  <p className="p-4">Data Kosong</p>
                 </td>
               </tr>
-            ))}
+            ) : (
+              <>
+                {visibleItems.map((item, index) => (
+                  <tr key={item.no} className="hover:bg-gray-100">
+                    <td className="px-4 py-3 border">{index + 1}</td>
+                    <td className="px-4 py-3 border">{item.name}</td>
+                    <td className="px-4 py-3 text-center border">
+                      {item.education}
+                    </td>
+                    <td className="px-4 py-3 text-center border">
+                      {item.gender}
+                    </td>
+                    <td className="px-4 py-3 text-center border">
+                      {item.workUnit}
+                    </td>
+                    <td className="px-4 py-3 border ">
+                      <a
+                        href={item.skFileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center text-blue-600 underline hover:no-underline"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6 mr-2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                          />
+                        </svg>
+                        SK File
+                      </a>
+                    </td>
+                    <td className="px-4 py-3 text-center border ">
+                      <a
+                        href={item.kkFileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center text-blue-600 underline hover:no-underline"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth="1.5"
+                          stroke="currentColor"
+                          className="w-6 h-6 mr-2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                          />
+                        </svg>
+                        KK File
+                      </a>
+                    </td>
+                  </tr>
+                ))}
+              </>
+            )}
           </tbody>
         </table>
       </div>
       {/* Pagination */}
-      <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 items-center mt-4">
+      <div className="flex flex-col items-center justify-center mt-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="bg-blue-400 text-white font-bold p-2 rounded-full"
+          className="p-2 font-bold text-white bg-blue-400 rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -163,7 +173,7 @@ const DataTable = ({ data }) => {
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === pageCount}
-          className="bg-blue-400 text-white font-bold p-2 rounded-full"
+          className="p-2 font-bold text-white bg-blue-400 rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

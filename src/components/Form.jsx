@@ -14,6 +14,7 @@ const Form = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertType, setAlertType] = useState(""); // "success" or "error"
   const [alertMessage, setAlertMessage] = useState("");
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const resetState = () => {
     setSelectedItem(null);
@@ -55,6 +56,7 @@ const Form = () => {
   const handleSave = async () => {
     if (selectedItem && skFile && kkFile) {
       try {
+        setLoading(true); // Set loading state to true
         const selectedData = data.find(
           (item) => item.no === selectedItem.value
         );
@@ -97,6 +99,8 @@ const Form = () => {
           "Terjadi kesalahan saat mengunggah file. Silakan coba lagi.",
           5000
         );
+      } finally {
+        setLoading(false); // Reset loading state after processing
       }
     } else {
       showAlertWithTimeout(
@@ -187,9 +191,11 @@ const Form = () => {
 
         <button
           onClick={handleSave}
+          disabled={loading} // Disable the button when loading
           className="w-full px-4 py-2 text-white transition duration-150 bg-blue-500 rounded-md hover:bg-blue-600"
         >
-          Simpan
+          {loading ? "Menyimpan..." : "Simpan"}{" "}
+          {/* Change button text based on loading state */}
         </button>
         {showAlert && alertType === "success" && (
           <AlertSuccess title="Berhasil" description={alertMessage} />

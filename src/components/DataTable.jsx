@@ -56,27 +56,26 @@ const DataTable = ({ data }) => {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="table w-full border">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="px-4 py-3 border">No</th>
-              <th className="px-4 py-3 border">Nama</th>
-              <th className="px-4 py-3 border">Pendidikan</th>
-              <th className="px-4 py-3 border">Jenis Kelamin</th>
-              <th className="px-4 py-3 border">Unit Kerja</th>
-              <th className="px-4 py-3 border">Berkas SK</th>
-              <th className="px-4 py-3 border">Berkas KK</th>
-            </tr>
-          </thead>
-          <tbody>
-            {visibleItems.length === 0 ? (
-              <tr>
-                <td className="flex items-center justify-center">
-                  <p className="p-4">Data Kosong</p>
-                </td>
-              </tr>
-            ) : (
-              <>
+        {visibleItems.length === 0 ? (
+          <div className="p-4 border shadow">
+            <p className="font-semibold text-center">Data Kosong</p>
+          </div>
+        ) : (
+          <>
+            {" "}
+            <table className="table w-full border">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="px-4 py-3 border">No</th>
+                  <th className="px-4 py-3 border">Nama</th>
+                  <th className="px-4 py-3 border">Pendidikan</th>
+                  <th className="px-4 py-3 border">Jenis Kelamin</th>
+                  <th className="px-4 py-3 border">Unit Kerja</th>
+                  <th className="px-4 py-3 border">Berkas SK</th>
+                  <th className="px-4 py-3 border">Berkas KK</th>
+                </tr>
+              </thead>
+              <tbody>
                 {visibleItems.map((item, index) => (
                   <tr key={item.no} className="hover:bg-gray-100">
                     <td className="px-4 py-3 border">{index + 1}</td>
@@ -140,56 +139,56 @@ const DataTable = ({ data }) => {
                     </td>
                   </tr>
                 ))}
-              </>
-            )}
-          </tbody>
-        </table>
-      </div>
-      {/* Pagination */}
-      <div className="flex flex-col items-center justify-center mt-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="p-2 font-bold text-white bg-blue-400 rounded-full"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-4 h-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M15.75 19.5L8.25 12l7.5-7.5"
-            />
-          </svg>
-        </button>
-        <span className="font-semibold">
-          Halaman {currentPage} dari {pageCount}
-        </span>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === pageCount}
-          className="p-2 font-bold text-white bg-blue-400 rounded-full"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-4 h-4"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M8.25 4.5l7.5 7.5-7.5 7.5"
-            />
-          </svg>
-        </button>
+              </tbody>
+            </table>
+            {/* Pagination */}
+            <div className="flex flex-col items-center justify-center mt-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-2 font-bold text-white bg-blue-400 rounded-full"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 19.5L8.25 12l7.5-7.5"
+                  />
+                </svg>
+              </button>
+              <span className="font-semibold">
+                Halaman {currentPage} dari {pageCount}
+              </span>
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === pageCount}
+                className="p-2 font-bold text-white bg-blue-400 rounded-full"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-4 h-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

@@ -40,12 +40,28 @@ const Form = () => {
 
   const handleSKFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    setSKFile(selectedFile);
+    if (selectedFile && selectedFile.type === "application/pdf") {
+      setSKFile(selectedFile);
+    } else {
+      showAlertWithTimeout(
+        "error",
+        "Mohon pilih file PDF untuk SK PPPK Gubernur.",
+        5000
+      );
+    }
   };
 
   const handleKKFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    setKKFile(selectedFile);
+    if (selectedFile && selectedFile.type === "application/pdf") {
+      setKKFile(selectedFile);
+    } else {
+      showAlertWithTimeout(
+        "error",
+        "Mohon pilih file PDF untuk Kartu Keluarga.",
+        5000
+      );
+    }
   };
 
   const options = data.map((item) => ({

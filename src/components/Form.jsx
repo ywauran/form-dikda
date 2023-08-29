@@ -56,7 +56,7 @@ const Form = () => {
     if (selectedItem && skFile && kkFile) {
       try {
         const selectedData = data.find(
-          (item) => item.no === selectedItem.value
+          (item) => item.name === selectedItem.value
         );
 
         const newDataRef = rtdbRef(database, "data");
@@ -83,32 +83,30 @@ const Form = () => {
         });
         // Show success alert for 5 seconds
         showAlertWithTimeout(
-          "success",
-          "Data and files saved successfully!",
+          "Berhasil",
+          "Data dan file berhasil disimpan.",
           5000
         );
         resetState();
       } catch (error) {
-        console.error("Error uploading files:", error);
-
         // Show error alert for 5 seconds
         showAlertWithTimeout(
           "error",
-          "An error occurred during file upload. Please try again.",
+          "Terjadi kesalahan saat mengunggah file. Silakan coba lagi.",
           5000
         );
       }
     } else {
       showAlertWithTimeout(
-        "error",
-        "Please select an option and upload both files.",
+        "Error",
+        "Silakan pilih salah satu opsi dan unggah kedua file.",
         5000
       );
     }
   };
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="max-w-sm md:max-w-md w-full box p-8">
+    <div className="flex items-center justify-center h-screen">
+      <div className="w-full max-w-sm p-8 md:max-w-md box">
         <h1 className="mb-4 font-bold text-center">Formulir</h1>
         <Select
           id="underline_select"
@@ -125,11 +123,11 @@ const Form = () => {
           </label>
           <label
             htmlFor="file1"
-            className="flex items-center justify-center px-4 py-2 bg-white rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition duration-150"
+            className="flex items-center justify-center px-4 py-2 transition duration-150 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 mr-2 text-gray-500"
+              className="w-6 h-6 mr-2 text-gray-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -158,11 +156,11 @@ const Form = () => {
           </label>
           <label
             htmlFor="file2"
-            className="flex items-center justify-center px-4 py-2 bg-white rounded-lg border border-gray-300 cursor-pointer hover:bg-gray-100 transition duration-150"
+            className="flex items-center justify-center px-4 py-2 transition duration-150 bg-white border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 mr-2 text-gray-500"
+              className="w-6 h-6 mr-2 text-gray-500"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -187,7 +185,7 @@ const Form = () => {
 
         <button
           onClick={handleSave}
-          className="bg-blue-500 w-full text-white px-4 py-2 rounded-md hover:bg-blue-600 transition duration-150"
+          className="w-full px-4 py-2 text-white transition duration-150 bg-blue-500 rounded-md hover:bg-blue-600"
         >
           Simpan
         </button>

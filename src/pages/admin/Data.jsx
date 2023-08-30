@@ -9,14 +9,11 @@ const Data = () => {
     try {
       const dataRef = ref(database, "data");
 
-      // Retrieve the data using the get() method
       const snapshot = await get(dataRef);
 
       if (snapshot.exists()) {
-        // Convert the snapshot's value into the data object
         const data = snapshot.val();
 
-        // You can set the data to your state if needed
         setData(data);
       } else {
         console.log("No data available.");
@@ -30,6 +27,7 @@ const Data = () => {
   useEffect(() => {
     queryData();
   }, []);
+
   return (
     <div className="p-4 ">
       <h3 className="text-3xl font-bold text-center">Daftar Data</h3>

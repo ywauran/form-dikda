@@ -208,7 +208,7 @@ const Form = () => {
         <button
           onClick={handleSave}
           disabled={loading} // Disable the button when loading
-          className="w-full px-4 py-2 text-white transition duration-150 bg-blue-500 rounded-md hover:bg-blue-600"
+          className="w-full px-4 py-2 text-white transition duration-150 bg-red-500 rounded-md hover:bg-red-600"
         >
           {loading ? "Menyimpan..." : "Simpan"}{" "}
           {/* Change button text based on loading state */}

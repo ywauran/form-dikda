@@ -94,7 +94,7 @@ const DataTable = ({ data }) => {
                         href={item.skFileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center text-blue-600 underline hover:no-underline"
+                        className="flex items-center justify-center text-red-600 underline hover:no-underline"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +118,7 @@ const DataTable = ({ data }) => {
                         href={item.kkFileUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center justify-center text-blue-600 underline hover:no-underline"
+                        className="flex items-center justify-center text-red-600 underline hover:no-underline"
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -146,7 +146,7 @@ const DataTable = ({ data }) => {
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="p-2 font-bold text-white bg-blue-400 rounded-full"
+                className="p-2 font-bold text-white bg-red-400 rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -169,7 +169,7 @@ const DataTable = ({ data }) => {
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === pageCount}
-                className="p-2 font-bold text-white bg-blue-400 rounded-full"
+                className="p-2 font-bold text-white bg-red-400 rounded-full"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

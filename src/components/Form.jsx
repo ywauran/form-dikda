@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { data } from "../utils/helper.js";
 import Select from "react-select";
 import { storage, database } from "../config/firebase.js";
 import { ref, push, getDownloadURL, uploadBytes } from "firebase/storage";
-import { ref as rtdbRef, push as rtdbPush, update } from "firebase/database";
+import {
+  ref as rtdbRef,
+  push as rtdbPush,
+  update,
+  get,
+} from "firebase/database";
 import AlertWarn from "./alert/AlertWarn";
 import AlertSuccess from "./alert/AlertSuccess";
 
@@ -12,9 +17,38 @@ const Form = () => {
   const [skFile, setSKFile] = useState(null);
   const [kkFile, setKKFile] = useState(null);
   const [showAlert, setShowAlert] = useState(false);
-  const [alertType, setAlertType] = useState(""); // "success" or "error"
+  const [alertType, setAlertType] = useState("");
   const [alertMessage, setAlertMessage] = useState("");
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [loading, setLoading] = useState(false);
+  const [dataUploaded, setDataUploaded] = useState([]);
+
+  const queryData = async () => {
+    try {
+      const dataRef = rtdbRef(database, "data");
+      const snapshot = await get(dataRef);
+
+      if (snapshot.exists()) {
+        const data = [];
+
+        snapshot.forEach((childSnapshot) => {
+          const item = childSnapshot.val();
+          data.push(item);
+        });
+
+        setDataUploaded(data);
+        console.log(dataUploaded);
+      } else {
+        console.log("No data available.");
+      }
+    } catch (error) {
+      console.error("Error querying data:", error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    queryData();
+  }, []);
 
   const resetState = () => {
     setSelectedItem(null);
@@ -64,10 +98,16 @@ const Form = () => {
     }
   };
 
-  const options = data.map((item) => ({
-    value: item.no,
-    label: item.name,
-  }));
+  // Buat daftar nama dari dataUploaded
+  const existingNames = dataUploaded.map((item) => item.name);
+
+  // Filter data berdasarkan nama yang belum ada di dataUploaded
+  const options = data
+    .filter((item) => !existingNames.includes(item.name))
+    .map((item) => ({
+      value: item.no,
+      label: item.name,
+    }));
 
   const handleSave = async () => {
     if (selectedItem && skFile && kkFile) {
@@ -134,7 +174,7 @@ const Form = () => {
           id="underline_select"
           options={options}
           className="w-full mb-4"
-          placeholder="Select an option"
+          placeholder="Silahkan pilih nama anda"
           isSearchable
           onChange={handleSelectChange}
         />

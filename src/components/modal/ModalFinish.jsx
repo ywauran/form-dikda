@@ -1,6 +1,6 @@
 import React from "react";
 
-const ModalLogout = ({ open, onClose, logout }) => {
+const ModalFinish = ({ open, onClose, handleFinish }) => {
   if (!open) {
     return null;
   }
@@ -12,13 +12,13 @@ const ModalLogout = ({ open, onClose, logout }) => {
           <div className="overflow-hidden bg-white rounded-lg">
             <div className="flex items-start justify-center p-4 rounded-t">
               <h3 className="text-2xl font-semibold text-center text-gray-900">
-                Keluar
+                Selesai
               </h3>
             </div>
 
             <div className="p-2 space-y-6">
               <p className="text-lg leading-relaxed text-center text-gray-500">
-                Anda yakin ingin keluar?
+                Apakah data ini sudah selesai diperiksa?
               </p>
             </div>
 
@@ -27,7 +27,7 @@ const ModalLogout = ({ open, onClose, logout }) => {
                 type="button"
                 className="w-24 btn button__primary"
                 onClick={() => {
-                  logout();
+                  handleFinish();
                   onClose();
                 }}
               >
@@ -48,4 +48,4 @@ const ModalLogout = ({ open, onClose, logout }) => {
   );
 };
 
-export default ModalLogout;
+export default ModalFinish;

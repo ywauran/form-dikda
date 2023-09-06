@@ -1,44 +1,18 @@
 import React, { useState } from "react";
 import ModalFinish from "./modal/ModalFinish";
-import { database } from "../config/firebase";
-import { ref, set } from "firebase/database";
 
-const DataTable = ({ data, setData }) => {
+const DataTableFinish = ({ data, setData }) => {
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
-  const [openModalFinish, setOpenModalFinish] = useState(false);
-  const [selectedItem, setSelectedItem] = useState("");
-  let filteredData = Object.values(data)
-    .filter(
-      (item) =>
-        (item.name &&
-          item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (item.education &&
-          item.education.toLowerCase().includes(searchTerm.toLowerCase()))
-    )
-    .filter((item) => !item.isFinish);
 
-  function filterRedundantData(data) {
-    if (!Array.isArray(data)) {
-      return [];
-    }
-
-    const filteredData = {};
-
-    for (const item of data) {
-      if (!item.isFinish) {
-        if (!filteredData[item.name]) {
-          filteredData[item.name] = item;
-        }
-      }
-    }
-
-    return Object.values(filteredData);
-  }
-
-  filteredData = filterRedundantData(filteredData);
-  const allKeys = Object.keys(data);
+  const filteredData = Object.values(data).filter(
+    (item) =>
+      (item.name &&
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (item.education &&
+        item.education.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   const pageCount = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -50,67 +24,6 @@ const DataTable = ({ data, setData }) => {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
-
-  const handleSelectedItem = (key) => {
-    setOpenModalFinish(true);
-    setSelectedItem(key);
-  };
-
-  const handleDelete = (key) => {
-    try {
-      if (!key) {
-        console.error("Key not found.");
-        return;
-      }
-
-      if (allKeys.includes(key)) {
-        const updatedData = { ...data };
-
-        delete updatedData[key];
-
-        const dataRef = ref(database, "data");
-        set(dataRef, updatedData);
-
-        setData(updatedData);
-
-        console.log("Data berhasil dihapus");
-      } else {
-        console.error(`Key '${key}' not found in allKeys.`);
-      }
-    } catch (error) {
-      console.error("Terjadi kesalahan saat menghapus data:", error);
-    }
-  };
-
-  const handleFinish = () => {
-    try {
-      const key = selectedItem;
-      if (!key) {
-        console.error("Item key not found.");
-        return;
-      }
-
-      if (allKeys.includes(key)) {
-        const updatedData = { ...data };
-        updatedData[key].isFinish = true;
-
-        const dataRef = ref(database, "data");
-
-        const newData = { ...data };
-        newData[key].isFinish = true;
-        set(dataRef, newData);
-
-        setData(updatedData);
-
-        console.log("Berhasil ditandai sebagai selesai");
-      } else {
-        console.error(`Key '${key}' not found in allKeys.`);
-      }
-    } catch (error) {
-      console.error("Terjadi kesalahan saat memperbarui data:", error);
-    }
-  };
-
   return (
     <>
       <div className="p-8">
@@ -164,10 +77,8 @@ const DataTable = ({ data, setData }) => {
                 </thead>
                 <tbody>
                   {visibleItems.map((item, index) => (
-                    <tr key={item.no} className="hover:bg-gray-100">
-                      <td className="px-4 py-3 border">
-                        {startIndex + index + 1}
-                      </td>
+                    <tr key={index + 1} className="hover:bg-gray-100">
+                      <td className="px-4 py-3 border">{index + 1}</td>
                       <td className="px-4 py-3 border">{item.name}</td>
                       <td className="px-4 py-3 text-center border">
                         {item.education}
@@ -224,35 +135,10 @@ const DataTable = ({ data, setData }) => {
                           KK File
                         </a>
                       </td>
-                      <td>
-                        {item?.isFinish === true ? (
-                          <></>
-                        ) : (
-                          <>
-                            <td className="px-4 py-3 text-center border ">
-                              <button
-                                className="button__primary"
-                                onClick={() => {
-                                  handleSelectedItem(
-                                    Object.keys(data).find(
-                                      (key) => data[key] === item
-                                    )
-                                  );
-                                }}
-                              >
-                                Selesai
-                              </button>
-                            </td>
-                          </>
-                        )}
-                        {/* <td className="px-4 py-3 text-center border">
-                          <button
-                            className="button__danger"
-                            onClick={() => handleDelete(item.key)}
-                          >
-                            Hapus
-                          </button>
-                        </td> */}
+                      <td className="p-3">
+                        <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded ">
+                          Selesai
+                        </span>
                       </td>
                     </tr>
                   ))}
@@ -308,13 +194,9 @@ const DataTable = ({ data, setData }) => {
           )}
         </div>
       </div>
-      <ModalFinish
-        open={openModalFinish}
-        onClose={() => setOpenModalFinish(false)}
-        handleFinish={handleFinish}
-      />
+      <ModalFinish />
     </>
   );
 };
 
-export default DataTable;
+export default DataTableFinish;

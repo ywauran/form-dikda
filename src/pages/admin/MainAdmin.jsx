@@ -6,6 +6,7 @@ import { FiFolder, FiLogOut } from "react-icons/fi";
 import { AiFillCalendar, AiFillPieChart } from "react-icons/ai";
 import Data from "./Data";
 import ModalLogout from "../../components/modal/ModalLogout";
+import DataFinish from "./DataFinish";
 
 const MainAdmin = () => {
   const [open, setOpen] = useState(true);
@@ -14,8 +15,13 @@ const MainAdmin = () => {
 
   const menus = [
     {
-      name: "Beranda",
+      name: "Berkas Belum Selesai",
       link: "/pages/home",
+      icon: FiFolder,
+    },
+    {
+      name: "Berkas Selesai",
+      link: "/pages/finish",
       icon: FiFolder,
     },
   ];
@@ -57,7 +63,7 @@ const MainAdmin = () => {
                   className={` ${
                     menu.margin && "mt-5"
                   } group flex items-center text-sm  gap-3.5 font-medium p-2 hover:bg-red-700 hover:text-white rounded-md`}
-                  activeClassName="text-[#FF0000]"
+                  activeClassName="active"
                 >
                   <div>{React.createElement(menu.icon, { size: "20" })}</div>
                   <h2
@@ -105,6 +111,7 @@ const MainAdmin = () => {
           <div className="p-5">
             <Routes>
               <Route path="/home" element={<Data />} />
+              <Route path="/finish" element={<DataFinish />} />
             </Routes>
           </div>
         </div>

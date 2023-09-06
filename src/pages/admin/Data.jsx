@@ -30,7 +30,9 @@ const Data = () => {
 
   return (
     <div className="p-4 ">
-      <h3 className="text-3xl font-bold text-center">Daftar Data</h3>
+      <h3 className="text-3xl font-bold text-center">
+        Daftar Data Belum Selesai
+      </h3>
       <DataTable data={data} />
     </div>
   );

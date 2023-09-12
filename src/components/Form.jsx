@@ -11,6 +11,7 @@ import {
 } from "firebase/database";
 import AlertWarn from "./alert/AlertWarn";
 import AlertSuccess from "./alert/AlertSuccess";
+import { Link } from "react-router-dom";
 
 const Form = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -150,14 +151,14 @@ const Form = () => {
 
         const kkFileRef = ref(
           storage,
-          `files/${newPushedDataRef.key}Kartu Keluarga.pdf`
+          `files/${newPushedDataRef.key} Kartu Keluarga.pdf`
         );
         await uploadBytes(kkFileRef, kkFile);
         const kkFileDownloadUrl = await getDownloadURL(kkFileRef);
 
         const kombelFileRef = ref(
           storage,
-          `files/${newPushedDataRef.key} Bukti Terdaftar/memiliki Kombel.pdf`
+          `files/${newPushedDataRef.key} Kombel.pdf`
         );
         await uploadBytes(kombelFileRef, kombelFile);
         const kombelFileDownloadUrl = await getDownloadURL(kombelFileRef);
@@ -198,7 +199,7 @@ const Form = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="w-full max-w-sm p-8 md:max-w-md box">
-        <h1 className="mb-4 font-bold text-center">Formulir</h1>
+        <h1 className="mb-4 text-xl font-bold text-center">Formulir</h1>
         <Select
           id="underline_select"
           options={options}
@@ -277,7 +278,7 @@ const Form = () => {
         {/* New input field for Bukti Terdaftar/memiliki Kombel */}
         <div className="mb-4">
           <label htmlFor="file3" className="block mb-2 font-semibold">
-            Bukti Terdaftar/memiliki Kombel
+            Bukti Terdaftar/memiliki Kombel melalui akun belajar id
           </label>
           <label
             htmlFor="file3"
@@ -301,7 +302,6 @@ const Form = () => {
             <input
               type="file"
               id="file3"
-              accept=".pdf"
               onChange={handleKombelFileChange}
               className="hidden"
             />
@@ -321,6 +321,12 @@ const Form = () => {
         {showAlert && alertType === "error" && (
           <AlertWarn title="Error" description={alertMessage} />
         )}
+        <div className="mt-4 text-red-500">
+          <span>Jika ingin melihat status verifikasi, silahkan lihat </span>
+          <Link to="/status" target="_blank" className="underline">
+            di sini.
+          </Link>
+        </div>
       </div>
     </div>
   );

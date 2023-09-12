@@ -5,14 +5,14 @@ import { getFirestore } from "firebase/firestore"; // Import the Firestore servi
 import { getAuth } from "firebase/auth"; // Import the Auth service
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCsTbw_sHHZmIc7Zje4lbV-piNon3-RDSk",
-  authDomain: "dikda-3b694.firebaseapp.com",
-  databaseURL: "https://dikda-3b694-default-rtdb.firebaseio.com",
-  projectId: "dikda-3b694",
-  storageBucket: "dikda-3b694.appspot.com",
-  messagingSenderId: "1058382920934",
-  appId: "1:1058382920934:web:18fca323a0f1a2f38c4f27",
-  measurementId: "G-GTG8H2JHSM",
+  apiKey: "AIzaSyCpGLg4g6c4YYFdvTc6gAVBJEot_D84rps",
+  authDomain: "form-pppk.firebaseapp.com",
+  databaseURL: "https://form-pppk-default-rtdb.firebaseio.com",
+  projectId: "form-pppk",
+  storageBucket: "form-pppk.appspot.com",
+  messagingSenderId: "659185883804",
+  appId: "1:659185883804:web:732a509adf3dc3fde6ab59",
+  measurementId: "G-NGF5N8FS9D",
 };
 
 const app = initializeApp(firebaseConfig);

@@ -322,7 +322,10 @@ const Form = () => {
           <AlertWarn title="Error" description={alertMessage} />
         )}
         <div className="mt-4 text-red-500">
-          <span>Jika ingin melihat status verifikasi, silahkan lihat </span>
+          <span>
+            Jika ingin melihat status verifikasi, apakah sudah selesai di
+            dapodik silahkan lihat{" "}
+          </span>
           <Link to="/status" target="_blank" className="underline">
             di sini.
           </Link>

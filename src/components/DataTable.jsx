@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import ModalFinish from "./modal/ModalFinish";
 import { database } from "../config/firebase";
-import { ref, set } from "firebase/database";
+import { ref, set, get, push, remove } from "firebase/database";
+import ModalDelete from "./modal/ModalDelete";
 
 const DataTable = ({ data, setData }) => {
   const itemsPerPage = 5;
@@ -9,6 +10,7 @@ const DataTable = ({ data, setData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [openModalFinish, setOpenModalFinish] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
+  const [openModalDelete, setOpenModalDelete] = useState("");
   let filteredData = Object.values(data)
     .filter(
       (item) =>
@@ -51,34 +53,71 @@ const DataTable = ({ data, setData }) => {
     setCurrentPage(newPage);
   };
 
-  const handleSelectedItem = (key) => {
-    setOpenModalFinish(true);
+  const handleSelectedItem = (key, conditional) => {
+    if (conditional === "finish") {
+      setOpenModalFinish(true);
+    } else {
+      setOpenModalDelete(true);
+    }
     setSelectedItem(key);
+    const dataRef = ref(database, `data/${key}`);
+    console.log(dataRef);
   };
 
-  const handleDelete = (key) => {
+  const handleDelete = (reason) => {
     try {
+      const key = selectedItem;
       if (!key) {
         console.error("Key not found.");
         return;
       }
 
-      if (allKeys.includes(key)) {
-        const updatedData = { ...data };
+      // Mendapatkan data dari database Firebase
+      const dataRef = ref(database, `data/${key}`);
 
-        delete updatedData[key];
+      get(dataRef)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            // Data berhasil ditemukan
+            const data = snapshot.val();
+            data.reason = reason;
+            // Referensi untuk data di path dataReject
+            const dataRejectRef = ref(database, "dataReject");
+            const newDataRef = push(dataRejectRef); // Generate a new unique key
 
-        const dataRef = ref(database, "data");
-        set(dataRef, updatedData);
+            // Menyalin data ke path dataReject
+            set(newDataRef, data)
+              .then(() => {
+                const newKey = newDataRef.key;
+                console.log(
+                  `Data berhasil ditambahkan dengan kunci acak: ${newKey}`
+                );
 
-        setData(updatedData);
-
-        console.log("Data berhasil dihapus");
-      } else {
-        console.error(`Key '${key}' not found in allKeys.`);
-      }
+                // Setelah data berhasil disalin, hapus data dari path data
+                remove(dataRef)
+                  .then(() => {
+                    console.log(`Data berhasil dihapus dari path data.`);
+                  })
+                  .catch((error) => {
+                    console.error(
+                      `Terjadi kesalahan saat menghapus data: ${error}`
+                    );
+                  });
+              })
+              .catch((error) => {
+                console.error(
+                  `Terjadi kesalahan saat menambahkan data ke dataReject: ${error}`
+                );
+              });
+          } else {
+            console.log("Data tidak ditemukan.");
+          }
+        })
+        .catch((error) => {
+          console.error("Terjadi kesalahan saat mengambil data:", error);
+        });
     } catch (error) {
-      console.error("Terjadi kesalahan saat menghapus data:", error);
+      console.error("Terjadi kesalahan saat mengambil data:", error);
     }
   };
 
@@ -250,34 +289,38 @@ const DataTable = ({ data, setData }) => {
                         </a>
                       </td>
                       <td>
-                        {item?.isFinish === true ? (
-                          <></>
-                        ) : (
+                        {item?.isFinish === true ? null : (
                           <>
-                            <td className="px-4 py-3 text-center border ">
+                            <td className="flex items-center px-4 py-3 space-x-2 text-center border">
                               <button
                                 className="button__primary"
                                 onClick={() => {
                                   handleSelectedItem(
                                     Object.keys(data).find(
                                       (key) => data[key] === item
-                                    )
+                                    ),
+                                    "finish"
                                   );
                                 }}
                               >
                                 Selesai
                               </button>
+                              <button
+                                className="button__secondary"
+                                onClick={() => {
+                                  handleSelectedItem(
+                                    Object.keys(data).find(
+                                      (key) => data[key] === item
+                                    ),
+                                    "delete"
+                                  );
+                                }}
+                              >
+                                Tolak
+                              </button>
                             </td>
                           </>
                         )}
-                        {/* <td className="px-4 py-3 text-center border">
-                          <button
-                            className="button__danger"
-                            onClick={() => handleDelete(item.key)}
-                          >
-                            Hapus
-                          </button>
-                        </td> */}
                       </td>
                     </tr>
                   ))}
@@ -342,6 +385,11 @@ const DataTable = ({ data, setData }) => {
         open={openModalFinish}
         onClose={() => setOpenModalFinish(false)}
         handleFinish={handleFinish}
+      />
+      <ModalDelete
+        open={openModalDelete}
+        onClose={() => setOpenModalDelete(false)}
+        handleDelete={handleDelete}
       />
     </>
   );

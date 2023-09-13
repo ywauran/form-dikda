@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { database } from "../../config/firebase";
-import { ref, get, orderByChild, equalTo } from "firebase/database";
+import { ref, get } from "firebase/database";
 import DataTableFinish from "../../components/DataTableFinish";
 
 const DataFinish = () => {

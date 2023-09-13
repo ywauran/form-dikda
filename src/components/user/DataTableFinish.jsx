@@ -1,8 +1,7 @@
 import React, { useState } from "react";
-import ModalFinish from "./modal/ModalFinish";
 
 const DataTableFinish = ({ data, setData }) => {
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -70,9 +69,7 @@ const DataTableFinish = ({ data, setData }) => {
                     <th className="px-4 py-3 border">Nama</th>
                     <th className="px-4 py-3 border">Pendidikan</th>
                     <th className="px-4 py-3 border">Unit Kerja</th>
-                    <th className="px-4 py-3 border">Berkas SK</th>
-                    <th className="px-4 py-3 border">Berkas KK</th>
-                    <th className="px-4 py-3 border">Aksi</th>
+                    <th className="px-4 py-3 border">Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -87,55 +84,8 @@ const DataTableFinish = ({ data, setData }) => {
                       <td className="px-4 py-3 text-center border">
                         {item.workUnit}
                       </td>
-                      <td className="px-4 py-3 border ">
-                        <a
-                          href={item.skFileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center text-red-600 underline hover:no-underline"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-6 h-6 mr-2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                            />
-                          </svg>
-                          SK File
-                        </a>
-                      </td>
-                      <td className="px-4 py-3 text-center border ">
-                        <a
-                          href={item.kkFileUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center justify-center text-red-600 underline hover:no-underline"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth="1.5"
-                            stroke="currentColor"
-                            className="w-6 h-6 mr-2"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-                            />
-                          </svg>
-                          KK File
-                        </a>
-                      </td>
-                      <td className="p-3">
+
+                      <td className="p-3 text-center border">
                         <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">
                           Selesai
                         </span>
@@ -144,7 +94,6 @@ const DataTableFinish = ({ data, setData }) => {
                   ))}
                 </tbody>
               </table>
-              {/* Pagination */}
               <div className="flex flex-col items-center justify-center mt-4 space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
@@ -194,7 +143,6 @@ const DataTableFinish = ({ data, setData }) => {
           )}
         </div>
       </div>
-      <ModalFinish />
     </>
   );
 };

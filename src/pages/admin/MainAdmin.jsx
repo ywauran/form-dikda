@@ -7,6 +7,7 @@ import { AiFillCalendar, AiFillPieChart } from "react-icons/ai";
 import Data from "./Data";
 import ModalLogout from "../../components/modal/ModalLogout";
 import DataFinish from "./DataFinish";
+import DataReject from "./DataReject";
 
 const MainAdmin = () => {
   const [open, setOpen] = useState(true);
@@ -22,6 +23,11 @@ const MainAdmin = () => {
     {
       name: "Berkas Selesai",
       link: "/pages/finish",
+      icon: FiFolder,
+    },
+    {
+      name: "Berkas Reject",
+      link: "/pages/reject",
       icon: FiFolder,
     },
   ];
@@ -112,6 +118,7 @@ const MainAdmin = () => {
             <Routes>
               <Route path="/home" element={<Data />} />
               <Route path="/finish" element={<DataFinish />} />
+              <Route path="/reject" element={<DataReject />} />
             </Routes>
           </div>
         </div>

@@ -26,7 +26,7 @@ const MainAdmin = () => {
       icon: FiFolder,
     },
     {
-      name: "Berkas Reject",
+      name: "Berkas Ditolak",
       link: "/pages/reject",
       icon: FiFolder,
     },

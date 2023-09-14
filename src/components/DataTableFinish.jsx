@@ -72,6 +72,7 @@ const DataTableFinish = ({ data, setData }) => {
                     <th className="px-4 py-3 border">Unit Kerja</th>
                     <th className="px-4 py-3 border">Berkas SK</th>
                     <th className="px-4 py-3 border">Berkas KK</th>
+                    <th className="px-4 py-3 border">Bukti Kombel</th>
                     <th className="px-4 py-3 border">Aksi</th>
                   </tr>
                 </thead>
@@ -133,6 +134,30 @@ const DataTableFinish = ({ data, setData }) => {
                             />
                           </svg>
                           KK File
+                        </a>
+                      </td>
+                      <td className="px-4 py-3 text-center border ">
+                        <a
+                          href={item.kombelFileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center justify-center text-red-600 underline hover:no-underline"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth="1.5"
+                            stroke="currentColor"
+                            className="w-6 h-6 mr-2"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
+                            />
+                          </svg>
+                          Bukti Kombel
                         </a>
                       </td>
                       <td className="p-3">

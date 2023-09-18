@@ -17,7 +17,8 @@ const DataReject = () => {
           const item = childSnapshot.val();
           data.push(item);
         });
-
+        // Urutkan data secara descending dengan reverse()
+        data.reverse();
         setDataReject(data);
       } else {
         console.log("No data available.");

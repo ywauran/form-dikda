@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ModalFinish from "./modal/ModalFinish";
 
 const DataTableFinish = ({ data, setData }) => {
   const itemsPerPage = 5;

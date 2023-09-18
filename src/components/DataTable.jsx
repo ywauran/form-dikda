@@ -4,8 +4,11 @@ import { database } from "../config/firebase";
 import { ref, set, get, push, remove } from "firebase/database";
 import ModalDelete from "./modal/ModalDelete";
 import ModalProcess from "./modal/ModalProcess";
+import LoadingProcess from "./loading/LoadingProcess";
+import AlertTopSuccess from "./alert/AlertTopSuccess";
+import AlertTopWarn from "./alert/AlertTopWarn";
 
-const DataTable = ({ data, setData }) => {
+const DataTable = ({ data, setData, fetchData }) => {
   const itemsPerPage = 5;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
@@ -13,6 +16,9 @@ const DataTable = ({ data, setData }) => {
   const [selectedItem, setSelectedItem] = useState("");
   const [openModalDelete, setOpenModalDelete] = useState(false);
   const [openModalProcess, setOpenModalProcess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
   let filteredData = Object.values(data)
     .filter(
       (item) =>
@@ -76,6 +82,7 @@ const DataTable = ({ data, setData }) => {
         return;
       }
 
+      setIsLoading(true);
       // Mendapatkan data dari database Firebase
       const dataRef = ref(database, `data/${key}`);
 
@@ -100,7 +107,14 @@ const DataTable = ({ data, setData }) => {
                 // Setelah data berhasil disalin, hapus data dari path data
                 remove(dataRef)
                   .then(() => {
-                    console.log(`Data berhasil dihapus dari path data.`);
+                    setIsSuccess(true);
+                    setTimeout(() => {
+                      setIsSuccess(false);
+                    }, 2000);
+                    setIsLoading(false);
+
+                    // Refresh halaman setelah operasi selesai
+                    window.location.reload();
                   })
                   .catch((error) => {
                     console.error(
@@ -185,6 +199,8 @@ const DataTable = ({ data, setData }) => {
 
   return (
     <>
+      {isSuccess ? <AlertTopSuccess message="Berhasil dihapus" /> : null}
+      {isError ? <AlertTopWarn message="Gagal" /> : null}
       <div className="p-8">
         <div className="flex justify-end">
           <div className="relative w-80">
@@ -460,6 +476,7 @@ const DataTable = ({ data, setData }) => {
         onClose={() => setOpenModalProcess(false)}
         handleProcess={handleProcess}
       />
+      {isLoading ? <LoadingProcess /> : null}
     </>
   );
 };

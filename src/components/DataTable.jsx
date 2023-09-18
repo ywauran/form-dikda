@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ModalFinish from "./modal/ModalFinish";
 import { database } from "../config/firebase";
 import { ref, set, get, push, remove } from "firebase/database";
@@ -8,8 +8,9 @@ import LoadingProcess from "./loading/LoadingProcess";
 import AlertTopSuccess from "./alert/AlertTopSuccess";
 import AlertTopWarn from "./alert/AlertTopWarn";
 
-const DataTable = ({ data, setData, fetchData }) => {
+const DataTable = () => {
   const itemsPerPage = 5;
+  const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [openModalFinish, setOpenModalFinish] = useState(false);
@@ -19,6 +20,30 @@ const DataTable = ({ data, setData, fetchData }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
+
+  const queryData = async () => {
+    try {
+      const dataRef = ref(database, "data");
+
+      const snapshot = await get(dataRef);
+
+      if (snapshot.exists()) {
+        const data = snapshot.val();
+
+        setData(data);
+      } else {
+        console.log("No data available.");
+      }
+    } catch (error) {
+      console.error("Error querying data:", error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    queryData();
+  }, []);
+
   let filteredData = Object.values(data)
     .filter(
       (item) =>
@@ -97,45 +122,31 @@ const DataTable = ({ data, setData, fetchData }) => {
             const newDataRef = push(dataRejectRef); // Generate a new unique key
 
             // Menyalin data ke path dataReject
-            set(newDataRef, data)
-              .then(() => {
-                const newKey = newDataRef.key;
-                console.log(
-                  `Data berhasil ditambahkan dengan kunci acak: ${newKey}`
-                );
-
-                // Setelah data berhasil disalin, hapus data dari path data
-                remove(dataRef)
-                  .then(() => {
-                    setIsSuccess(true);
-                    setTimeout(() => {
-                      setIsSuccess(false);
-                    }, 2000);
-                    setIsLoading(false);
-
-                    // Refresh halaman setelah operasi selesai
-                    window.location.reload();
-                  })
-                  .catch((error) => {
-                    console.error(
-                      `Terjadi kesalahan saat menghapus data: ${error}`
-                    );
-                  });
-              })
-              .catch((error) => {
-                console.error(
-                  `Terjadi kesalahan saat menambahkan data ke dataReject: ${error}`
-                );
-              });
+            return set(newDataRef, data);
           } else {
             console.log("Data tidak ditemukan.");
           }
         })
+        .then(() => {
+          // Setelah data berhasil disalin, hapus data dari path data
+          return remove(dataRef);
+        })
+        .then(() => {
+          // queryData() harus dipanggil setelah data dihapus
+          return queryData();
+        })
+        .then(() => {
+          setIsSuccess(true);
+        })
         .catch((error) => {
-          console.error("Terjadi kesalahan saat mengambil data:", error);
+          console.error("Terjadi kesalahan:", error);
+        })
+        .finally(() => {
+          setIsLoading(false); // Hentikan loading setelah operasi selesai
+          setIsSuccess(false);
         });
     } catch (error) {
-      console.error("Terjadi kesalahan saat mengambil data:", error);
+      console.error("Terjadi kesalahan:", error);
     }
   };
 

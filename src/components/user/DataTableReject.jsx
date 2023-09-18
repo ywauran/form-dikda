@@ -13,7 +13,9 @@ const DataTableReject = ({ data }) => {
         item.education.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  const pageCount = Math.ceil(filteredData.length / itemsPerPage);
+  const totalData = filteredData.length;
+
+  const pageCount = Math.ceil(totalData / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const visibleItems = filteredData.slice(
     startIndex,
@@ -23,6 +25,7 @@ const DataTableReject = ({ data }) => {
   const handlePageChange = (newPage) => {
     setCurrentPage(newPage);
   };
+
   return (
     <>
       <div className="p-8">
@@ -76,12 +79,13 @@ const DataTableReject = ({ data }) => {
                 <tbody>
                   {visibleItems.map((item, index) => (
                     <tr key={index + 1} className="hover:bg-gray-100">
-                      <td className="px-4 py-3 border">{index + 1}</td>
+                      <td className="px-4 py-3 border">
+                        {index + 1 + startIndex}
+                      </td>
                       <td className="px-4 py-3 border">{item.name}</td>
                       <td className="px-4 py-3 text-center border">
                         {item.education}
                       </td>
-
                       <td className="px-4 py-3 text-center border">
                         {item.workUnit}
                       </td>
@@ -89,7 +93,7 @@ const DataTableReject = ({ data }) => {
                         {item.reason}
                       </td>
                       <td className="p-3 text-center border">
-                        <span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded ">
+                        <span className="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded">
                           Tolak
                         </span>
                       </td>
@@ -119,7 +123,8 @@ const DataTableReject = ({ data }) => {
                   </svg>
                 </button>
                 <span className="font-semibold">
-                  Halaman {currentPage} dari {pageCount}
+                  Halaman {currentPage} dari {pageCount} - Total {totalData}{" "}
+                  data
                 </span>
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}

@@ -3,6 +3,7 @@ import ModalFinish from "./modal/ModalFinish";
 import { database } from "../config/firebase";
 import { ref, set, get, push, remove } from "firebase/database";
 import ModalDelete from "./modal/ModalDelete";
+import ModalProcess from "./modal/ModalProcess";
 
 const DataTable = ({ data, setData }) => {
   const itemsPerPage = 5;
@@ -10,7 +11,8 @@ const DataTable = ({ data, setData }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [openModalFinish, setOpenModalFinish] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
-  const [openModalDelete, setOpenModalDelete] = useState("");
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [openModalProcess, setOpenModalProcess] = useState(false);
   let filteredData = Object.values(data)
     .filter(
       (item) =>
@@ -56,6 +58,8 @@ const DataTable = ({ data, setData }) => {
   const handleSelectedItem = (key, conditional) => {
     if (conditional === "finish") {
       setOpenModalFinish(true);
+    } else if (conditional === "process") {
+      setOpenModalProcess(true);
     } else {
       setOpenModalDelete(true);
     }
@@ -137,6 +141,35 @@ const DataTable = ({ data, setData }) => {
 
         const newData = { ...data };
         newData[key].isFinish = true;
+        set(dataRef, newData);
+
+        setData(updatedData);
+
+        console.log("Berhasil ditandai sebagai selesai");
+      } else {
+        console.error(`Key '${key}' not found in allKeys.`);
+      }
+    } catch (error) {
+      console.error("Terjadi kesalahan saat memperbarui data:", error);
+    }
+  };
+
+  const handleProcess = () => {
+    try {
+      const key = selectedItem;
+      if (!key) {
+        console.error("Item key not found.");
+        return;
+      }
+
+      if (allKeys.includes(key)) {
+        const updatedData = { ...data };
+        updatedData[key].isProcess = true;
+
+        const dataRef = ref(database, "data");
+
+        const newData = { ...data };
+        newData[key].isProcess = true;
         set(dataRef, newData);
 
         setData(updatedData);
@@ -291,34 +324,65 @@ const DataTable = ({ data, setData }) => {
                       <td>
                         {item?.isFinish === true ? null : (
                           <>
-                            <td className="flex items-center px-4 py-3 space-x-2 text-center border">
-                              <button
-                                className="button__primary"
-                                onClick={() => {
-                                  handleSelectedItem(
-                                    Object.keys(data).find(
-                                      (key) => data[key] === item
-                                    ),
-                                    "finish"
-                                  );
-                                }}
-                              >
-                                Selesai
-                              </button>
-                              <button
-                                className="button__secondary"
-                                onClick={() => {
-                                  handleSelectedItem(
-                                    Object.keys(data).find(
-                                      (key) => data[key] === item
-                                    ),
-                                    "delete"
-                                  );
-                                }}
-                              >
-                                Tolak
-                              </button>
-                            </td>
+                            {item?.isProcess === true ? (
+                              <td className="flex items-center px-4 py-3 space-x-2 text-center border">
+                                <button
+                                  className="button__third"
+                                  onClick={() => {
+                                    handleSelectedItem(
+                                      Object.keys(data).find(
+                                        (key) => data[key] === item
+                                      ),
+                                      "finish"
+                                    );
+                                  }}
+                                >
+                                  Selesai
+                                </button>
+                                <button
+                                  className="button__secondary"
+                                  onClick={() => {
+                                    handleSelectedItem(
+                                      Object.keys(data).find(
+                                        (key) => data[key] === item
+                                      ),
+                                      "delete"
+                                    );
+                                  }}
+                                >
+                                  Tolak
+                                </button>
+                              </td>
+                            ) : (
+                              <td className="flex items-center px-4 py-3 space-x-2 text-center border">
+                                <button
+                                  className="button__primary"
+                                  onClick={() => {
+                                    handleSelectedItem(
+                                      Object.keys(data).find(
+                                        (key) => data[key] === item
+                                      ),
+                                      "process"
+                                    );
+                                  }}
+                                >
+                                  Proses
+                                </button>
+                                <button
+                                  className="button__secondary"
+                                  onClick={() => {
+                                    handleSelectedItem(
+                                      Object.keys(data).find(
+                                        (key) => data[key] === item
+                                      ),
+                                      "delete"
+                                    );
+                                  }}
+                                >
+                                  Tolak
+                                </button>
+                              </td>
+                            )}
                           </>
                         )}
                       </td>
@@ -390,6 +454,11 @@ const DataTable = ({ data, setData }) => {
         open={openModalDelete}
         onClose={() => setOpenModalDelete(false)}
         handleDelete={handleDelete}
+      />
+      <ModalProcess
+        open={openModalProcess}
+        onClose={() => setOpenModalProcess(false)}
+        handleProcess={handleProcess}
       />
     </>
   );

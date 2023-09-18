@@ -1,6 +1,6 @@
 import React from "react";
 
-const ModalFinish = ({ open, onClose, handleFinish }) => {
+const ModalProcess = ({ open, onClose, handleProcess }) => {
   if (!open) {
     return null;
   }
@@ -18,7 +18,7 @@ const ModalFinish = ({ open, onClose, handleFinish }) => {
 
             <div className="p-2 space-y-6">
               <p className="text-lg leading-relaxed text-center text-gray-500">
-                Apakah data ini sudah selesai diproses?
+                Apakah data ini akan diproses?
               </p>
             </div>
 
@@ -27,7 +27,7 @@ const ModalFinish = ({ open, onClose, handleFinish }) => {
                 type="button"
                 className="w-24 btn button__primary"
                 onClick={() => {
-                  handleFinish();
+                  handleProcess();
                   onClose();
                 }}
               >
@@ -48,4 +48,4 @@ const ModalFinish = ({ open, onClose, handleFinish }) => {
   );
 };
 
-export default ModalFinish;
+export default ModalProcess;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const DataTableFinish = ({ data, setData }) => {
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
 

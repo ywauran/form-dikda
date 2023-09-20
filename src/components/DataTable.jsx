@@ -9,7 +9,7 @@ import AlertTopSuccess from "./alert/AlertTopSuccess";
 import AlertTopWarn from "./alert/AlertTopWarn";
 
 const DataTable = () => {
-  const itemsPerPage = 5;
+  const itemsPerPage = 10;
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ref, get } from "firebase/database";
 import { database } from "../../config/firebase";
 import DataTableReject from "../../components/user/DataTableReject";
+import { hasDuplicateByName } from "../../utils/duplicate";
 
 const DataReject = () => {
   const [dataReject, setDataReject] = useState([]);
@@ -17,9 +18,9 @@ const DataReject = () => {
           const item = childSnapshot.val();
           data.push(item);
         });
-        // Urutkan data secara descending dengan reverse()
+
         data.reverse();
-        setDataReject(data);
+        setDataReject(hasDuplicateByName(data));
       } else {
         console.log("No data available.");
       }

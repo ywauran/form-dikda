@@ -46,7 +46,7 @@ const StatusPage = () => {
         });
 
         const result = compareArrays(data, dataReject);
-        setDataFinish(hasDuplicateByName(data));
+        setDataFinish(hasDuplicateByName(result.uniqueData1));
         setDataReject(hasDuplicateByName(result.uniqueData2));
       } else {
         console.log("No dataReject available.");

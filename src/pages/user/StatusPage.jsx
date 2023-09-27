@@ -3,6 +3,9 @@ import DataTableFinish from "../../components/user/DataTableFinish";
 import { database } from "../../config/firebase";
 import { ref, get } from "firebase/database";
 import DataTableReject from "../../components/user/DataTableReject";
+import { compareData, compareArrays } from "../../utils/compareData";
+import { hasDuplicateByName } from "../../utils/duplicate";
+
 const StatusPage = () => {
   const [dataFinish, setDataFinish] = useState([]);
   const [dataReject, setDataReject] = useState([]);
@@ -16,44 +19,37 @@ const StatusPage = () => {
   const queryData = async () => {
     try {
       const dataRef = ref(database, "data");
-      const snapshot = await get(dataRef);
+      const dataRejectRef = ref(database, "dataReject");
 
-      if (snapshot.exists()) {
-        const data = [];
+      const [snapshotData, snapshotDataReject] = await Promise.all([
+        get(dataRef),
+        get(dataRejectRef),
+      ]);
 
-        snapshot.forEach((childSnapshot) => {
+      const data = [];
+      const dataReject = [];
+      if (snapshotData.exists()) {
+        snapshotData.forEach((childSnapshot) => {
           const item = childSnapshot.val();
           if (item.isFinish === true) {
             data.push(item);
           }
         });
-
-        setDataFinish(data);
       } else {
         console.log("No data available.");
       }
-    } catch (error) {
-      console.error("Error querying data:", error);
-      throw error;
-    }
-  };
 
-  const queryDataReject = async () => {
-    try {
-      const dataRef = ref(database, "dataReject");
-      const snapshot = await get(dataRef);
-
-      if (snapshot.exists()) {
-        const data = [];
-
-        snapshot.forEach((childSnapshot) => {
+      if (snapshotDataReject.exists()) {
+        snapshotDataReject.forEach((childSnapshot) => {
           const item = childSnapshot.val();
-          data.push(item);
+          dataReject.push(item);
         });
 
-        setDataReject(data);
+        const result = compareArrays(data, dataReject);
+        setDataFinish(hasDuplicateByName(data));
+        setDataReject(hasDuplicateByName(result.uniqueData2));
       } else {
-        console.log("No data available.");
+        console.log("No dataReject available.");
       }
     } catch (error) {
       console.error("Error querying data:", error);
@@ -63,7 +59,6 @@ const StatusPage = () => {
 
   useEffect(() => {
     queryData();
-    queryDataReject();
   }, []);
 
   return (

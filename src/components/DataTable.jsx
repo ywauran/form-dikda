@@ -167,8 +167,8 @@ const DataTable = () => {
         const newData = { ...data };
         newData[key].isFinish = true;
         set(dataRef, newData);
-
-        setData(updatedData);
+        queryData();
+        // setData(updatedData);
 
         console.log("Berhasil ditandai sebagai selesai");
       } else {
@@ -197,7 +197,8 @@ const DataTable = () => {
         newData[key].isProcess = true;
         set(dataRef, newData);
 
-        setData(updatedData);
+        // setData(updatedData);
+        queryData();
 
         console.log("Berhasil ditandai sebagai selesai");
       } else {
